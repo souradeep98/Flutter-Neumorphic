@@ -6,9 +6,9 @@ import 'package:flutter_neumorphic/src/widget/container.dart';
 ///
 /// the gradient will use [accent] and [variant]
 ///
-/// the gradient shape will be a roundrect, using [borderRadius]
+/// the gradient shape will be a roundRect, using [borderRadius]
 ///
-/// you can define a custom [depth] for the roundrect
+/// you can define a custom [depth] for the roundRect
 ///
 /// you can update the gradient orientation using [gradientStart] & [gradientEnd]
 ///
@@ -65,7 +65,7 @@ enum NeumorphicIndicatorOrientation { vertical, horizontal }
 ///
 /// it takes a [padding], a [width] and [height]
 ///
-/// the current accented roundrect use the [percent] field
+/// the current accented roundRect use the [percent] field
 ///
 /// Widget _buildIndicators() {
 ///
@@ -110,6 +110,7 @@ class NeumorphicIndicator extends StatefulWidget {
   final IndicatorStyle style;
   final Duration duration;
   final Curve curve;
+  final Clip clipBehavior;
 
   const NeumorphicIndicator({
     super.key,
@@ -121,6 +122,7 @@ class NeumorphicIndicator extends StatefulWidget {
     this.style = const IndicatorStyle(),
     this.duration = const Duration(milliseconds: 300),
     this.curve = Curves.easeOutCubic,
+    this.clipBehavior = Clip.antiAlias,
   });
 
   @override
@@ -199,6 +201,7 @@ class _NeumorphicIndicatorState extends State<NeumorphicIndicator>
       height: widget.height,
       width: widget.width,
       child: Neumorphic(
+        clipBehavior: widget.clipBehavior,
         //padding: EdgeInsets.zero,
         style: NeumorphicStyle(
           boxShape: const NeumorphicBoxShape.stadium(),
@@ -229,6 +232,7 @@ class _NeumorphicIndicatorState extends State<NeumorphicIndicator>
               child: Padding(
                 padding: widget.padding,
                 child: Neumorphic(
+                  clipBehavior: widget.clipBehavior,
                   style: NeumorphicStyle(
                     boxShape: const NeumorphicBoxShape.stadium(),
                     lightSource: widget.style.lightSource ?? theme.lightSource,

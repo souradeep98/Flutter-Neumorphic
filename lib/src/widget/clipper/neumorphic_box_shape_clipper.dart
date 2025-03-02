@@ -5,8 +5,14 @@ import 'package:flutter_neumorphic/src/neumorphic_box_shape.dart';
 class NeumorphicBoxShapeClipper extends StatelessWidget {
   final NeumorphicBoxShape shape;
   final Widget? child;
+  final Clip clipBehavior;
 
-  const NeumorphicBoxShapeClipper({required this.shape, this.child});
+  const NeumorphicBoxShapeClipper({
+    required this.shape,
+    this.child,
+    super.key,
+    this.clipBehavior = Clip.antiAlias,
+  });
 
   CustomClipper<Path>? _getClipper(NeumorphicBoxShape shape) {
     return shape.customShapePathProvider;
@@ -17,6 +23,7 @@ class NeumorphicBoxShapeClipper extends StatelessWidget {
     return ClipPath(
       clipper: _getClipper(shape),
       child: child,
+      clipBehavior: clipBehavior,
     );
   }
 }

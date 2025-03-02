@@ -1,6 +1,7 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
-import 'package:flutter_neumorphic/src/widget/animation/animated_scale.dart' as animation_scale;
+import 'package:flutter_neumorphic/src/widget/animation/animated_scale.dart'
+    as animation_scale;
 
 typedef NeumorphicButtonClickListener = void Function();
 
@@ -53,6 +54,7 @@ class NeumorphicButton extends StatefulWidget {
   final bool drawSurfaceAboveChild;
   final bool provideHapticFeedback;
   final String? tooltip;
+  final Clip clipBehavior;
 
   const NeumorphicButton({
     super.key,
@@ -69,6 +71,7 @@ class NeumorphicButton extends StatefulWidget {
     this.minDistance = 0,
     this.style,
     this.provideHapticFeedback = true,
+    this.clipBehavior = Clip.antiAlias,
   });
 
   bool get isEnabled => onPressed != null;
@@ -87,11 +90,13 @@ class _NeumorphicButtonState extends State<NeumorphicButton> {
     final appBarPresent = NeumorphicAppBarTheme.of(context) != null;
 
     final theme = NeumorphicTheme.currentTheme(context);
-    initialStyle = widget.style ??
+    initialStyle =
+        widget.style ??
         (appBarPresent
             ? theme.appBarTheme.buttonStyle
             : (theme.buttonStyle ?? const NeumorphicStyle()));
-    depth = widget.style?.depth ??
+    depth =
+        widget.style?.depth ??
         (appBarPresent ? theme.appBarTheme.buttonStyle.depth : theme.depth) ??
         0.0;
 
@@ -160,10 +165,7 @@ class _NeumorphicButtonState extends State<NeumorphicButton> {
   Widget build(BuildContext context) {
     final result = _build(context);
     if (widget.tooltip != null) {
-      return Tooltip(
-        message: widget.tooltip,
-        child: result,
-      );
+      return Tooltip(message: widget.tooltip, child: result);
     } else {
       return result;
     }
@@ -194,16 +196,16 @@ class _NeumorphicButtonState extends State<NeumorphicButton> {
       child: animation_scale.AnimatedScale(
         scale: _getScale(),
         child: Neumorphic(
+          clipBehavior: widget.clipBehavior,
           margin: widget.margin ?? EdgeInsets.zero,
           drawSurfaceAboveChild: widget.drawSurfaceAboveChild,
           duration: widget.duration,
           curve: widget.curve,
-          padding: widget.padding ??
+          padding:
+              widget.padding ??
               (appBarPresent ? appBarTheme.buttonPadding : null) ??
               const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
-          style: initialStyle.copyWith(
-            depth: _getDepth(),
-          ),
+          style: initialStyle.copyWith(depth: _getDepth()),
           child: widget.child,
         ),
       ),

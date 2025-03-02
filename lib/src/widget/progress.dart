@@ -1,4 +1,3 @@
-
 import 'package:flutter/widgets.dart';
 
 import 'package:flutter_neumorphic/src/widget/container.dart';
@@ -91,15 +90,17 @@ class NeumorphicProgress extends StatefulWidget {
   final Duration duration;
   final ProgressStyle style;
   final Curve curve;
+  final Clip clipBehavior;
 
-  const NeumorphicProgress(
-      {super.key,
-      double? percent,
-      this.height = 10,
-      this.duration = const Duration(milliseconds: 300),
-      this.style = const ProgressStyle(),
-      this.curve = Curves.easeOutCubic})
-      : _percent = percent;
+  const NeumorphicProgress({
+    super.key,
+    double? percent,
+    this.height = 10,
+    this.duration = const Duration(milliseconds: 300),
+    this.style = const ProgressStyle(),
+    this.curve = Curves.easeOutCubic,
+    this.clipBehavior = Clip.antiAlias,
+  }) : _percent = percent;
 
   @override
   _NeumorphicProgressState createState() => _NeumorphicProgressState();
@@ -134,8 +135,10 @@ class _NeumorphicProgressState extends State<NeumorphicProgress>
   void initState() {
     super.initState();
     _controller = AnimationController(vsync: this, duration: widget.duration);
-    _animation = Tween<double>(begin: widget.percent, end: oldPercent)
-        .animate(_controller);
+    _animation = Tween<double>(
+      begin: widget.percent,
+      end: oldPercent,
+    ).animate(_controller);
   }
 
   @override
@@ -143,8 +146,10 @@ class _NeumorphicProgressState extends State<NeumorphicProgress>
     if (oldWidget.percent != widget.percent) {
       _controller.reset();
       oldPercent = oldWidget.percent;
-      _animation = Tween<double>(begin: oldPercent, end: widget.percent)
-          .animate(CurvedAnimation(parent: _controller, curve: widget.curve));
+      _animation = Tween<double>(
+        begin: oldPercent,
+        end: widget.percent,
+      ).animate(CurvedAnimation(parent: _controller, curve: widget.curve));
       _controller.forward();
     }
     super.didUpdateWidget(oldWidget);
@@ -167,6 +172,7 @@ class _NeumorphicProgressState extends State<NeumorphicProgress>
         widthFactor: 1,
         //width: constraints.maxWidth,
         child: Neumorphic(
+          clipBehavior: widget.clipBehavior,
           //padding: EdgeInsets.zero,
           style: NeumorphicStyle(
             boxShape: NeumorphicBoxShape.roundRect(widget.style.borderRadius),
@@ -176,25 +182,28 @@ class _NeumorphicProgressState extends State<NeumorphicProgress>
             //shape: NeumorphicShape.flat,
           ),
           child: AnimatedBuilder(
-              animation: _controller,
-              builder: (_, _) {
-                return FractionallySizedBox(
-                  alignment: Alignment.centerLeft,
-                  widthFactor: _animation.value,
-                  child: _GradientProgress(
-                    borderRadius: widget.style.gradientBorderRadius ??
-                        widget.style.borderRadius,
-                    begin: widget.style.progressGradientStart ??
-                        Alignment.centerLeft,
-                    end: widget.style.progressGradientEnd ??
-                        Alignment.centerRight,
-                    colors: [
-                      widget.style.variant ?? theme.variantColor,
-                      widget.style.accent ?? theme.accentColor,
-                    ],
-                  ),
-                );
-              }),
+            animation: _controller,
+            builder: (_, _) {
+              return FractionallySizedBox(
+                alignment: Alignment.centerLeft,
+                widthFactor: _animation.value,
+                child: _GradientProgress(
+                  borderRadius:
+                      widget.style.gradientBorderRadius ??
+                      widget.style.borderRadius,
+                  begin:
+                      widget.style.progressGradientStart ??
+                      Alignment.centerLeft,
+                  end:
+                      widget.style.progressGradientEnd ?? Alignment.centerRight,
+                  colors: [
+                    widget.style.variant ?? theme.variantColor,
+                    widget.style.accent ?? theme.accentColor,
+                  ],
+                ),
+              );
+            },
+          ),
         ),
       ),
     );
@@ -223,6 +232,7 @@ class NeumorphicProgressIndeterminate extends StatefulWidget {
   final Duration duration;
   final bool reverse;
   final Curve curve;
+  final Clip clipBehavior;
 
   const NeumorphicProgressIndeterminate({
     super.key,
@@ -231,10 +241,12 @@ class NeumorphicProgressIndeterminate extends StatefulWidget {
     this.duration = const Duration(seconds: 3),
     this.reverse = false,
     this.curve = Curves.easeInOut,
+    this.clipBehavior = Clip.antiAlias,
   });
 
   @override
-  State<NeumorphicProgressIndeterminate> createState() => _NeumorphicProgressIndeterminateState();
+  State<NeumorphicProgressIndeterminate> createState() =>
+      _NeumorphicProgressIndeterminateState();
 
   @override
   // ignore: invalid_override_of_non_virtual_member
@@ -268,8 +280,10 @@ class _NeumorphicProgressIndeterminateState
   void initState() {
     super.initState();
     _controller = AnimationController(vsync: this, duration: widget.duration);
-    _animation = Tween<double>(begin: 0, end: 1)
-        .animate(CurvedAnimation(parent: _controller, curve: widget.curve));
+    _animation = Tween<double>(
+      begin: 0,
+      end: 1,
+    ).animate(CurvedAnimation(parent: _controller, curve: widget.curve));
     _loop();
   }
 
@@ -278,7 +292,7 @@ class _NeumorphicProgressIndeterminateState
       await _controller
           .repeat(min: 0, max: 1, reverse: widget.reverse)
           .orCancel;
-    } catch(_) {}
+    } catch (_) {}
   }
 
   @override
@@ -296,6 +310,7 @@ class _NeumorphicProgressIndeterminateState
       child: SizedBox(
         height: widget.height,
         child: Neumorphic(
+          clipBehavior: widget.clipBehavior,
           //padding: EdgeInsets.zero,
           style: NeumorphicStyle(
             boxShape: NeumorphicBoxShape.roundRect(widget.style.borderRadius),
@@ -305,33 +320,40 @@ class _NeumorphicProgressIndeterminateState
             depth: widget.style.depth,
             //shape: NeumorphicShape.flat,
           ),
-          child: LayoutBuilder(builder: (context, constraints) {
-            return AnimatedBuilder(
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              return AnimatedBuilder(
                 animation: _animation,
                 builder: (_, _) {
                   return Padding(
                     padding: EdgeInsets.only(
-                        left: constraints.maxWidth * _animation.value),
+                      left: constraints.maxWidth * _animation.value,
+                    ),
                     child: FractionallySizedBox(
                       heightFactor: 1,
                       alignment: Alignment.centerLeft,
                       widthFactor: _animation.value,
                       child: _GradientProgress(
-                        borderRadius: widget.style.gradientBorderRadius ??
+                        borderRadius:
+                            widget.style.gradientBorderRadius ??
                             widget.style.borderRadius,
-                        begin: widget.style.progressGradientStart ??
+                        begin:
+                            widget.style.progressGradientStart ??
                             Alignment.centerLeft,
-                        end: widget.style.progressGradientEnd ??
+                        end:
+                            widget.style.progressGradientEnd ??
                             Alignment.centerRight,
                         colors: [
                           widget.style.accent ?? theme.accentColor,
-                          widget.style.variant ?? theme.variantColor
+                          widget.style.variant ?? theme.variantColor,
                         ],
                       ),
                     ),
                   );
-                });
-          }),
+                },
+              );
+            },
+          ),
         ),
       ),
     );
@@ -349,8 +371,7 @@ class _GradientProgress extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: borderRadius,
-        gradient: LinearGradient(
-            begin: begin, end: end, colors: colors),
+        gradient: LinearGradient(begin: begin, end: end, colors: colors),
       ),
     );
   }

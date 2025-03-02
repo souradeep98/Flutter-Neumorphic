@@ -57,7 +57,8 @@ class Neumorphic extends StatelessWidget {
   final Curve curve;
   final Duration duration;
   final bool
-      drawSurfaceAboveChild; //if true => boxDecoration & foreground decoration, else => boxDecoration does all the work
+  drawSurfaceAboveChild; //if true => boxDecoration & foreground decoration, else => boxDecoration does all the work
+  final Clip clipBehavior;
 
   const Neumorphic({
     super.key,
@@ -69,16 +70,19 @@ class Neumorphic extends StatelessWidget {
     this.margin = EdgeInsets.zero,
     this.padding = EdgeInsets.zero,
     this.drawSurfaceAboveChild = true,
+    this.clipBehavior = Clip.none,
   });
 
   @override
   Widget build(BuildContext context) {
     final theme = NeumorphicTheme.currentTheme(context);
-    final NeumorphicStyle style = (this.style ?? const NeumorphicStyle())
-        .copyWithThemeIfNull(theme)
-        .applyDisableDepth();
+    final NeumorphicStyle style =
+        (this.style ?? const NeumorphicStyle())
+            .copyWithThemeIfNull(theme)
+            .applyDisableDepth();
 
     return _NeumorphicContainer(
+      clipBehavior: clipBehavior,
       padding: padding,
       textStyle: textStyle,
       drawSurfaceAboveChild: drawSurfaceAboveChild,
@@ -100,6 +104,7 @@ class _NeumorphicContainer extends StatelessWidget {
   final Curve curve;
   final bool drawSurfaceAboveChild;
   final EdgeInsets padding;
+  final Clip clipBehavior;
 
   const _NeumorphicContainer({
     // ignore: unused_element_parameter
@@ -112,6 +117,7 @@ class _NeumorphicContainer extends StatelessWidget {
     required this.curve,
     required this.style,
     required this.drawSurfaceAboveChild,
+    this.clipBehavior = Clip.none,
   });
 
   @override
@@ -124,12 +130,11 @@ class _NeumorphicContainer extends StatelessWidget {
         margin: margin,
         duration: duration,
         curve: curve,
+        clipBehavior: clipBehavior,
         child: NeumorphicBoxShapeClipper(
           shape: shape,
-          child: Padding(
-            padding: padding,
-            child: child,
-          ),
+          child: Padding(padding: padding, child: child),
+          clipBehavior: clipBehavior,
         ),
         foregroundDecoration: NeumorphicDecoration(
           isForeground: true,

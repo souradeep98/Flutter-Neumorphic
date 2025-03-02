@@ -147,6 +147,7 @@ class NeumorphicToggle extends StatelessWidget {
 
   final Curve alphaAnimationCurve;
   final bool displayForegroundOnlyIfSelected;
+  final Clip clipBehavior;
 
   const NeumorphicToggle({
     this.style = const NeumorphicToggleStyle(),
@@ -164,6 +165,7 @@ class NeumorphicToggle extends StatelessWidget {
     this.width,
     this.isEnabled = true,
     this.displayForegroundOnlyIfSelected = true,
+    this.clipBehavior = Clip.antiAlias,
   });
 
   Widget _buildStack(BuildContext context) {
@@ -184,6 +186,7 @@ class NeumorphicToggle extends StatelessWidget {
             widthFactor: 1 / children.length,
             heightFactor: 1,
             child: Neumorphic(
+              clipBehavior: clipBehavior,
               style: NeumorphicStyle(
                 boxShape: NeumorphicBoxShape.roundRect(
                     style?.borderRadius ??
@@ -255,6 +258,7 @@ class NeumorphicToggle extends StatelessWidget {
 
   Widget _background(BuildContext context) {
     return Neumorphic(
+      clipBehavior: clipBehavior,
       style: NeumorphicStyle(
           boxShape: NeumorphicBoxShape.roundRect(style?.borderRadius ??
               const BorderRadius.all(Radius.circular(12))),

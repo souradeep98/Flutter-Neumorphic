@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 /// A implicit animated widget than update the child's scale depending on the
 /// parameter `scale` and `duration`
 ///
-/// eg: in an statefull widget
+/// eg: in an stateful widget
 ///
 /// double _scale = 1;
 ///
@@ -18,19 +18,23 @@ import 'package:flutter/widgets.dart';
 ///   _scale = 0.5
 /// });
 ///
-/// This will aimate the child's scale from 1 to 0.5 in 150ms (default duration)
+/// This will animate the child's scale from 1 to 0.5 in 150ms (default duration)
 ///
 class AnimatedScale extends StatefulWidget {
   final Widget? child;
   final double scale;
   final Duration duration;
   final Alignment alignment;
+  final FilterQuality? filterQuality;
+  final Curve curve;
 
   const AnimatedScale({
     this.child,
     this.scale = 1,
     this.duration = const Duration(milliseconds: 150),
     this.alignment = Alignment.center,
+    this.filterQuality,
+    this.curve = Curves.linear,
   });
 
   @override
@@ -41,25 +45,38 @@ class _AnimatedScaleState extends State<AnimatedScale>
     with TickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
-  double oldScale = 1;
 
   @override
   void initState() {
-    _controller = AnimationController(duration: widget.duration, vsync: this);
-    _animation = Tween<double>(begin: widget.scale, end: widget.scale)
-        .animate(_controller);
+    _controller = AnimationController(vsync: this);
+    _animation = ConstantTween<double>(widget.scale).animate(_controller);
     super.initState();
   }
 
   @override
   void didUpdateWidget(AnimatedScale oldWidget) {
     if (oldWidget.scale != widget.scale) {
-      _controller.reset();
-      oldScale = oldWidget.scale;
-      _animation = Tween<double>(begin: oldScale, end: widget.scale)
-          .animate(_controller);
-      _controller.forward();
+      final double oldScale = _animation.value;
+      final double newScale = widget.scale;
+      _animation = Tween<double>(
+        begin: oldScale,
+        end: newScale,
+      ).animate(_controller);
+      if (newScale > oldScale) {
+        _controller.animateTo(
+          newScale,
+          duration: widget.duration,
+          curve: widget.curve,
+        );
+      } else if (newScale < oldScale) {
+        _controller.animateBack(
+          newScale,
+          duration: widget.duration,
+          curve: widget.curve,
+        );
+      }
     }
+
     super.didUpdateWidget(oldWidget);
   }
 
@@ -74,6 +91,7 @@ class _AnimatedScaleState extends State<AnimatedScale>
     return ScaleTransition(
       scale: _animation,
       alignment: widget.alignment,
+      filterQuality: widget.filterQuality,
       child: widget.child,
     );
   }

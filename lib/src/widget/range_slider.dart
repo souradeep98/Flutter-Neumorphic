@@ -119,6 +119,7 @@ class NeumorphicRangeSlider extends StatefulWidget {
   final Function(ActiveThumb)? onPanStarted;
   final Function(ActiveThumb)? onPanEnded;
   final Widget? thumb;
+  final Clip clipBehavior;
 
   const NeumorphicRangeSlider({
     super.key,
@@ -134,6 +135,7 @@ class NeumorphicRangeSlider extends StatefulWidget {
     this.onPanEnded,
     this.sliderHeight,
     this.thumb,
+    this.clipBehavior = Clip.antiAlias,
   });
 
   double get percentLow => ((valueLow.clamp(min, max)) - min) / (max - min);
@@ -293,6 +295,7 @@ class _NeumorphicRangeSliderState extends State<NeumorphicRangeSlider> {
   Widget _generateThumb(BuildContext context, double size, Color? color) {
     final theme = NeumorphicTheme.currentTheme(context);
     return Neumorphic(
+      clipBehavior: widget.clipBehavior,
       style: NeumorphicStyle(
         disableDepth: widget.style.disableDepth,
         shape: NeumorphicShape.concave,

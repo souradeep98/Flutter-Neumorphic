@@ -78,6 +78,8 @@ class NeumorphicAppBar extends StatefulWidget implements PreferredSizeWidget {
 
   final double padding;
 
+  final Clip clipBehavior;
+
   const NeumorphicAppBar({
     super.key,
     this.title,
@@ -93,6 +95,7 @@ class NeumorphicAppBar extends StatefulWidget implements PreferredSizeWidget {
     this.titleSpacing = NavigationToolbar.kMiddleSpacing,
     this.actionSpacing = defaultSpacing,
     this.padding = 16,
+    this.clipBehavior = Clip.none,
   });
 
   @override
@@ -223,6 +226,7 @@ class NeumorphicAppBarState extends State<NeumorphicAppBar> {
     }
     return Container(
       color: widget.color ?? nTheme?.current?.appBarTheme.color,
+      clipBehavior: widget.clipBehavior,
       child: SafeArea(
         bottom: false,
         child: NeumorphicAppBarTheme(
