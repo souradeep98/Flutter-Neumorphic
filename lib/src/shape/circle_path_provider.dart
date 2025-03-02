@@ -1,10 +1,9 @@
 import 'dart:math';
 
-import '../../flutter_neumorphic.dart';
-import 'neumorphic_path_provider.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 
 class CirclePathProvider extends NeumorphicPathProvider {
-  const CirclePathProvider({Listenable? reclip});
+  const CirclePathProvider({super.reclip});
 
   @override
   bool shouldReclip(NeumorphicPathProvider oldClipper) {

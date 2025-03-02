@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 
 class NeumorphicApp extends StatelessWidget {
@@ -37,7 +36,7 @@ class NeumorphicApp extends StatelessWidget {
   final bool debugShowMaterialGrid;
 
   const NeumorphicApp({
-    Key? key,
+    super.key,
     this.title = '',
     this.color,
     this.initialRoute,
@@ -70,7 +69,7 @@ class NeumorphicApp extends StatelessWidget {
     this.debugShowMaterialGrid = false,
     this.shortcuts,
     this.actions,
-  }) : super(key: key);
+  });
 
   ThemeData _getMaterialTheme(NeumorphicThemeData theme) {
     final color = theme.accentColor;

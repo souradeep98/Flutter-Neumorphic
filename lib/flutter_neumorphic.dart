@@ -1,4 +1,5 @@
-library flutter_neumorphic;
+// ignore: unnecessary_library_directive
+library;
 
 export 'package:flutter/material.dart'
     show

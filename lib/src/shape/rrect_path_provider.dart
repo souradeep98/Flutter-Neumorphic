@@ -1,10 +1,9 @@
-import '../../flutter_neumorphic.dart';
-import 'neumorphic_path_provider.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 
 class RRectPathProvider extends NeumorphicPathProvider {
   final BorderRadius borderRadius;
 
-  const RRectPathProvider(this.borderRadius, {Listenable? reclip});
+  const RRectPathProvider(this.borderRadius, {super.reclip});
 
   @override
   bool shouldReclip(NeumorphicPathProvider oldClipper) {

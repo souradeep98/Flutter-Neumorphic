@@ -1,11 +1,7 @@
-import '../../flutter_neumorphic.dart';
-import 'rrect_path_provider.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:flutter_neumorphic/src/shape/rrect_path_provider.dart';
 
 class StadiumPathProvider extends RRectPathProvider {
-  const StadiumPathProvider({Listenable? reclip})
-      : super(
-            const BorderRadius.all(
-              const Radius.circular(1000),
-            ),
-            reclip: reclip);
+  const StadiumPathProvider({super.reclip})
+    : super(const BorderRadius.all(Radius.circular(1000)));
 }

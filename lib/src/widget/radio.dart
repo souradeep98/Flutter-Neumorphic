@@ -1,11 +1,9 @@
 import 'package:flutter/widgets.dart';
 
-import '../neumorphic_box_shape.dart';
-import '../theme/neumorphic_theme.dart';
-import 'button.dart';
-import 'container.dart';
+import 'package:flutter_neumorphic/src/widget/button.dart';
+import 'package:flutter_neumorphic/src/widget/container.dart';
 
-typedef void NeumorphicRadioListener<T>(T value);
+typedef NeumorphicRadioListener<T> = void Function(T value);
 
 /// A Style used to customize a [NeumorphicRadio]
 ///
@@ -88,7 +86,7 @@ class NeumorphicRadioStyle {
 ///
 /// notifies the parent when user interact with this widget with `onChanged`
 ///
-/// ```
+/// ```dart
 /// int _groupValue;
 ///
 /// Widget _buildRadios() {
@@ -164,7 +162,8 @@ class NeumorphicRadio<T> extends StatelessWidget {
   final Duration duration;
   final Curve curve;
 
-  NeumorphicRadio({
+  const NeumorphicRadio({
+    super.key,
     this.child,
     this.style = const NeumorphicRadioStyle(),
     this.value,

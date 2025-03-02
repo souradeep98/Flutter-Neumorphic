@@ -1,4 +1,4 @@
-import '../../../flutter_neumorphic.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 
 class NeumorphicFlutterLogoPathProvider extends NeumorphicPathProvider {
   @override
@@ -8,8 +8,8 @@ class NeumorphicFlutterLogoPathProvider extends NeumorphicPathProvider {
 
   @override
   Path getPath(Size size) {
-    var scaleX = size.width / 166;
-    var scaleY = size.height / 202;
+    final double scaleX = size.width / 166;
+    final double scaleY = size.height / 202;
 
     return Path()
       ..moveTo(37.7 * scaleX, 128.9 * scaleY)

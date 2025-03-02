@@ -1,10 +1,5 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
-import '../../flutter_neumorphic.dart';
-import 'inherited_neumorphic_theme.dart';
-import 'theme.dart';
-import 'theme_wrapper.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 
 export 'inherited_neumorphic_theme.dart';
 export 'theme.dart';
@@ -49,8 +44,8 @@ class NeumorphicTheme extends StatefulWidget {
   final Widget child;
   final ThemeMode themeMode;
 
-  NeumorphicTheme({
-    Key? key,
+  const NeumorphicTheme({
+    super.key,
     required this.child,
     this.theme = neumorphicDefaultTheme,
     this.darkTheme = neumorphicDefaultDarkTheme,
@@ -105,8 +100,8 @@ class NeumorphicTheme extends StatefulWidget {
     return currentTheme(context).depth;
   }
 
-  static double? embossDepth(BuildContext context) {
-    if (currentTheme(context).depth == null) return null;
+  static double embossDepth(BuildContext context) {
+    //if (currentTheme(context).depth == null) return null;
     return -currentTheme(context).depth.abs();
   }
 
@@ -123,19 +118,24 @@ class NeumorphicTheme extends StatefulWidget {
   }
 }
 
-double applyThemeDepthEnable(
-    {required BuildContext context,
-    required bool styleEnableDepth,
-    required double depth}) {
+double applyThemeDepthEnable({
+  required BuildContext context,
+  required bool styleEnableDepth,
+  required double depth,
+}) {
   final NeumorphicThemeData theme = NeumorphicTheme.currentTheme(context);
   return wrapDepthWithThemeData(
-      themeData: theme, styleEnableDepth: styleEnableDepth, depth: depth);
+    themeData: theme,
+    styleEnableDepth: styleEnableDepth,
+    depth: depth,
+  );
 }
 
-double wrapDepthWithThemeData(
-    {required NeumorphicThemeData themeData,
-    required bool styleEnableDepth,
-    required double depth}) {
+double wrapDepthWithThemeData({
+  required NeumorphicThemeData themeData,
+  required bool styleEnableDepth,
+  required double depth,
+}) {
   if (themeData.disableDepth) {
     return 0;
   } else {

@@ -1,10 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
-
-import '../neumorphic_box_shape.dart';
-import '../theme/neumorphic_theme.dart';
-import 'container.dart';
 
 class NeumorphicToggleStyle {
   final double? depth;
@@ -157,7 +151,7 @@ class NeumorphicToggle extends StatelessWidget {
 
   const NeumorphicToggle({
     this.style = const NeumorphicToggleStyle(),
-    Key? key,
+    super.key,
     required this.children,
     required this.thumb,
     this.padding = const EdgeInsets.all(2),
@@ -171,41 +165,37 @@ class NeumorphicToggle extends StatelessWidget {
     this.width,
     this.isEnabled = true,
     this.displayForegroundOnlyIfSelected = true,
-  }) : super(key: key);
+  });
 
   Widget _buildStack(BuildContext context) {
     return Stack(
       children: [
         _background(context),
         Row(
-          mainAxisSize: MainAxisSize.max,
           children: _generateBackgrounds(),
         ),
         AnimatedAlign(
-          curve: this.movingCurve,
+          curve: movingCurve,
           onEnd: () {
-            if (onAnimationChangedFinished != null) {
-              onAnimationChangedFinished!(this.selectedIndex);
-            }
+            onAnimationChangedFinished?.call(selectedIndex);
           },
           alignment: _alignment(),
-          duration: this.duration,
+          duration: duration,
           child: FractionallySizedBox(
-            widthFactor: 1 / this.children.length,
+            widthFactor: 1 / children.length,
             heightFactor: 1,
             child: Neumorphic(
               style: NeumorphicStyle(
                 boxShape: NeumorphicBoxShape.roundRect(
-                    this.style?.borderRadius ??
-                        BorderRadius.all(Radius.circular(12))),
+                    style?.borderRadius ??
+                        const BorderRadius.all(Radius.circular(12))),
               ),
-              margin: this.padding,
-              child: this.thumb,
+              margin: padding,
+              child: thumb,
             ),
           ),
         ),
         Row(
-          mainAxisSize: MainAxisSize.max,
           children: _generateForegrounds(),
         ),
       ],
@@ -214,7 +204,7 @@ class NeumorphicToggle extends StatelessWidget {
 
   List<Widget> _generateBackgrounds() {
     final List<Widget> widgets = [];
-    for (int i = 0; i < this.children.length; ++i) {
+    for (int i = 0; i < children.length; ++i) {
       widgets.add(_backgroundAtIndex(i));
     }
     return widgets;
@@ -222,40 +212,39 @@ class NeumorphicToggle extends StatelessWidget {
 
   List<Widget> _generateForegrounds() {
     final List<Widget> widgets = [];
-    for (int i = 0; i < this.children.length; ++i) {
+    for (int i = 0; i < children.length; ++i) {
       widgets.add(_foregroundAtIndex(i));
     }
     return widgets;
   }
 
   Alignment _alignment() {
-    double percentX = selectedIndex / (this.children.length - 1);
-    double aligmentX = -1.0 + (2.0 * percentX);
-    return Alignment(aligmentX, 0.0);
+    final double percentX = selectedIndex / (children.length - 1);
+    final double alignmentX = -1.0 + (2.0 * percentX);
+    return Alignment(alignmentX, 0.0);
   }
 
   Widget _backgroundAtIndex(int index) {
     return Expanded(
-        flex: 1, child: this.children[index].background ?? SizedBox.expand());
+        child: children[index].background ?? const SizedBox.expand());
   }
 
   Widget _foregroundAtIndex(int index) {
-    Widget? child = (!this.displayForegroundOnlyIfSelected) ||
-            (this.displayForegroundOnlyIfSelected &&
-                this.selectedIndex == index)
-        ? this.children[index].foreground
-        : SizedBox.expand();
+    Widget? child = (!displayForegroundOnlyIfSelected) ||
+            (displayForegroundOnlyIfSelected &&
+                selectedIndex == index)
+        ? children[index].foreground
+        : const SizedBox.expand();
     //wrap with opacity animation
     if (style != null && style!.animateOpacity) {
       child = AnimatedOpacity(
-        curve: this.alphaAnimationCurve,
-        opacity: this.selectedIndex == index ? 1 : 0,
-        duration: this.duration,
+        curve: alphaAnimationCurve,
+        opacity: selectedIndex == index ? 1 : 0,
+        duration: duration,
         child: child,
       );
     }
     return Expanded(
-        flex: 1,
         child: GestureDetector(
           behavior: HitTestBehavior.opaque,
           onTap: () {
@@ -268,32 +257,31 @@ class NeumorphicToggle extends StatelessWidget {
   Widget _background(BuildContext context) {
     return Neumorphic(
       style: NeumorphicStyle(
-          boxShape: NeumorphicBoxShape.roundRect(this.style?.borderRadius ??
-              BorderRadius.all(Radius.circular(12))),
-          color: this.style?.backgroundColor,
-          disableDepth: this.style?.disableDepth,
+          boxShape: NeumorphicBoxShape.roundRect(style?.borderRadius ??
+              const BorderRadius.all(Radius.circular(12))),
+          color: style?.backgroundColor,
+          disableDepth: style?.disableDepth,
           depth: _getTrackDepth(context),
-          shape: NeumorphicShape.flat,
-          border: this.style?.border ?? NeumorphicBorder.none(),
-          lightSource: this.style?.lightSource ??
+          border: style?.border ?? const NeumorphicBorder.none(),
+          lightSource: style?.lightSource ??
               NeumorphicTheme.currentTheme(context).lightSource),
-      child: SizedBox.expand(),
+      child: const SizedBox.expand(),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    if (this.width != null) {
+    if (width != null) {
       return SizedBox(
-        height: this.height,
-        width: this.width,
+        height: height,
+        width: width,
         child: _buildStack(context),
       );
     } else {
       return FractionallySizedBox(
         widthFactor: 1.0,
         child: SizedBox(
-          height: this.height,
+          height: height,
           child: _buildStack(context),
         ),
       );
@@ -304,13 +292,11 @@ class NeumorphicToggle extends StatelessWidget {
     final NeumorphicThemeData theme = NeumorphicTheme.currentTheme(context);
 
     //force negative to have emboss
-    final double depth = -1 * (this.style?.depth ?? theme.depth).abs();
+    final double depth = -1 * (style?.depth ?? theme.depth).abs();
     return depth.clamp(Neumorphic.MIN_DEPTH, NeumorphicToggle.MIN_EMBOSS_DEPTH);
   }
 
   void _notifyOnChange(int newValue) {
-    if (this.onChanged != null) {
-      this.onChanged!(newValue);
-    }
+    onChanged?.call(newValue);
   }
 }

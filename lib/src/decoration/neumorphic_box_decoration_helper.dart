@@ -1,14 +1,14 @@
 import 'package:flutter/widgets.dart';
 
-import '../theme/theme.dart';
+import 'package:flutter_neumorphic/src/theme/theme.dart';
 
 Shader getGradientShader(
     {required Rect gradientRect,
     required LightSource source,
     double intensity = 0.25}) {
-  var sourceInvert = source.invert();
+  final LightSource sourceInvert = source.invert();
 
-  final currentIntensity = intensity * (3 / 5);
+  final double currentIntensity = intensity * (3 / 5);
 
   final Gradient gradient = LinearGradient(
     begin: Alignment(source.dx, source.dy),
@@ -18,7 +18,7 @@ Shader getGradientShader(
       NeumorphicColors.gradientShaderWhiteColor(
           intensity: currentIntensity * (2 / 5)),
     ],
-    stops: [
+    stops: const [
       0,
       0.75, //was 1 but set to 0.75 to be less dark
     ],

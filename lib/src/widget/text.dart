@@ -1,11 +1,9 @@
 import 'dart:ui' as ui show FontFeature;
 
 import 'package:flutter/material.dart' as material;
-import 'package:flutter/widgets.dart';
 import 'package:flutter_neumorphic/src/decoration/neumorphic_text_decorations.dart';
 
-import '../../flutter_neumorphic.dart';
-import '../theme/neumorphic_theme.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 
 export '../decoration/neumorphic_decorations.dart';
 export '../neumorphic_box_shape.dart';
@@ -152,30 +150,30 @@ class NeumorphicText extends StatelessWidget {
   final Curve curve;
   final Duration duration;
 
-  NeumorphicText(
+  const NeumorphicText(
     this.text, {
-    Key? key,
+    super.key,
     this.duration = Neumorphic.DEFAULT_DURATION,
     this.curve = Neumorphic.DEFAULT_CURVE,
     this.style,
     this.textAlign = TextAlign.center,
     this.textStyle,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     final theme = NeumorphicTheme.currentTheme(context);
-    final NeumorphicStyle style = (this.style ?? NeumorphicStyle())
+    final NeumorphicStyle style = (this.style ?? const NeumorphicStyle())
         .copyWithThemeIfNull(theme)
         .applyDisableDepth();
 
     return _NeumorphicText(
-      textStyle: (this.textStyle ?? NeumorphicTextStyle()).textStyle,
-      textAlign: this.textAlign,
-      text: this.text,
-      duration: this.duration,
+      textStyle: (textStyle ?? NeumorphicTextStyle()).textStyle,
+      textAlign: textAlign,
+      text: text,
+      duration: duration,
       style: style,
-      curve: this.curve,
+      curve: curve,
     );
   }
 }
@@ -190,15 +188,16 @@ class _NeumorphicText extends material.StatefulWidget {
 
   final TextAlign textAlign;
 
-  _NeumorphicText({
-    Key? key,
+  const _NeumorphicText({
+    // ignore: unused_element_parameter
+    super.key,
     required this.duration,
     required this.curve,
     required this.textAlign,
     required this.style,
     required this.textStyle,
     required this.text,
-  }) : super(key: key);
+  });
 
   @override
   __NeumorphicTextState createState() => __NeumorphicTextState();
@@ -207,31 +206,31 @@ class _NeumorphicText extends material.StatefulWidget {
 class __NeumorphicTextState extends material.State<_NeumorphicText> {
   @override
   Widget build(BuildContext context) {
-    final TextPainter _textPainter = TextPainter(
-        textDirection: TextDirection.ltr, textAlign: this.widget.textAlign);
-    final textStyle = this.widget.textStyle;
-    _textPainter.text = TextSpan(
-      text: this.widget.text,
-      style: this.widget.textStyle,
+    final TextPainter textPainter = TextPainter(
+        textDirection: TextDirection.ltr, textAlign: widget.textAlign);
+    final textStyle = widget.textStyle;
+    textPainter.text = TextSpan(
+      text: widget.text,
+      style: widget.textStyle,
     );
 
     return LayoutBuilder(builder: (context, constraints) {
-      _textPainter.layout(minWidth: 0, maxWidth: constraints.maxWidth);
-      final double width = _textPainter.width;
-      final double height = _textPainter.height;
+      textPainter.layout(maxWidth: constraints.maxWidth);
+      final double width = textPainter.width;
+      final double height = textPainter.height;
 
       return DefaultTextStyle(
         style: textStyle,
         child: AnimatedContainer(
-          duration: this.widget.duration,
-          curve: this.widget.curve,
+          duration: widget.duration,
+          curve: widget.curve,
           foregroundDecoration: NeumorphicTextDecoration(
             isForeground: true,
             textStyle: textStyle,
             textAlign: widget.textAlign,
             renderingByPath: true,
-            style: this.widget.style,
-            text: this.widget.text,
+            style: widget.style,
+            text: widget.text,
           ),
           child: SizedBox(
             width: width,

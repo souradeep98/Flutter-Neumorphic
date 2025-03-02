@@ -1,8 +1,7 @@
-import 'dart:ui';
 
 import 'package:flutter/widgets.dart';
 
-import 'container.dart';
+import 'package:flutter_neumorphic/src/widget/container.dart';
 
 /// A style to customize the [NeumorphicProgress]
 ///
@@ -79,7 +78,7 @@ class ProgressStyle {
 /// and the value should increase monotonically from 0.0 to 1.0, at which time the indicator is complete.
 /// To create a determinate progress indicator, use a non-null value between 0.0 and 1.0.
 ///
-///  ```
+///  ```dart
 ///  NeumorphicProgress(
 ///      height: 15,
 ///      percent: 0.55,
@@ -94,14 +93,13 @@ class NeumorphicProgress extends StatefulWidget {
   final Curve curve;
 
   const NeumorphicProgress(
-      {Key? key,
+      {super.key,
       double? percent,
       this.height = 10,
       this.duration = const Duration(milliseconds: 300),
       this.style = const ProgressStyle(),
       this.curve = Curves.easeOutCubic})
-      : this._percent = percent,
-        super(key: key);
+      : _percent = percent;
 
   @override
   _NeumorphicProgressState createState() => _NeumorphicProgressState();
@@ -130,7 +128,7 @@ class _NeumorphicProgressState extends State<NeumorphicProgress>
   double? oldPercent = 0;
 
   late AnimationController _controller;
-  late Animation _animation;
+  late Animation<double> _animation;
 
   @override
   void initState() {
@@ -169,17 +167,17 @@ class _NeumorphicProgressState extends State<NeumorphicProgress>
         widthFactor: 1,
         //width: constraints.maxWidth,
         child: Neumorphic(
-          padding: EdgeInsets.zero,
+          //padding: EdgeInsets.zero,
           style: NeumorphicStyle(
             boxShape: NeumorphicBoxShape.roundRect(widget.style.borderRadius),
             disableDepth: widget.style.disableDepth,
             border: widget.style.border,
             depth: widget.style.depth,
-            shape: NeumorphicShape.flat,
+            //shape: NeumorphicShape.flat,
           ),
           child: AnimatedBuilder(
               animation: _controller,
-              builder: (_, __) {
+              builder: (_, _) {
                 return FractionallySizedBox(
                   alignment: Alignment.centerLeft,
                   widthFactor: _animation.value,
@@ -212,7 +210,7 @@ class _NeumorphicProgressState extends State<NeumorphicProgress>
 /// Indeterminate progress indicators do not have a specific value at each point in time and instead indicate that progress is being made
 /// without indicating how much progress remains. To create an indeterminate progress indicator, use a null value.
 ///
-///  ```
+///  ```dart
 ///  NeumorphicProgressIndeterminate(
 ///      height: 15,
 ///  );
@@ -227,16 +225,16 @@ class NeumorphicProgressIndeterminate extends StatefulWidget {
   final Curve curve;
 
   const NeumorphicProgressIndeterminate({
-    Key? key,
+    super.key,
     this.height = 10,
     this.style = const ProgressStyle(),
     this.duration = const Duration(seconds: 3),
     this.reverse = false,
     this.curve = Curves.easeInOut,
-  }) : super(key: key);
+  });
 
   @override
-  createState() => _NeumorphicProgressIndeterminateState();
+  State<NeumorphicProgressIndeterminate> createState() => _NeumorphicProgressIndeterminateState();
 
   @override
   // ignore: invalid_override_of_non_virtual_member
@@ -264,7 +262,7 @@ class _NeumorphicProgressIndeterminateState
     extends State<NeumorphicProgressIndeterminate>
     with TickerProviderStateMixin {
   late AnimationController _controller;
-  late Animation _animation;
+  late Animation<double> _animation;
 
   @override
   void initState() {
@@ -275,12 +273,12 @@ class _NeumorphicProgressIndeterminateState
     _loop();
   }
 
-  void _loop() async {
+  Future<void> _loop() async {
     try {
       await _controller
           .repeat(min: 0, max: 1, reverse: widget.reverse)
           .orCancel;
-    } on TickerCanceled {}
+    } catch(_) {}
   }
 
   @override
@@ -298,19 +296,19 @@ class _NeumorphicProgressIndeterminateState
       child: SizedBox(
         height: widget.height,
         child: Neumorphic(
-          padding: EdgeInsets.zero,
+          //padding: EdgeInsets.zero,
           style: NeumorphicStyle(
             boxShape: NeumorphicBoxShape.roundRect(widget.style.borderRadius),
             lightSource: widget.style.lightSource ?? theme.lightSource,
             border: widget.style.border,
             disableDepth: widget.style.disableDepth,
             depth: widget.style.depth,
-            shape: NeumorphicShape.flat,
+            //shape: NeumorphicShape.flat,
           ),
           child: LayoutBuilder(builder: (context, constraints) {
             return AnimatedBuilder(
                 animation: _animation,
-                builder: (_, __) {
+                builder: (_, _) {
                   return Padding(
                     padding: EdgeInsets.only(
                         left: constraints.maxWidth * _animation.value),
@@ -350,9 +348,9 @@ class _GradientProgress extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        borderRadius: this.borderRadius,
+        borderRadius: borderRadius,
         gradient: LinearGradient(
-            begin: this.begin, end: this.end, colors: this.colors),
+            begin: begin, end: end, colors: colors),
       ),
     );
   }

@@ -1,10 +1,7 @@
-import 'package:flutter/widgets.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 
-import 'container.dart';
-import 'progress.dart';
 
-typedef void NeumorphicSliderListener(double percent);
+typedef NeumorphicSliderListener = void Function(double percent);
 
 /// A style to customize the [NeumorphicSlider]
 ///
@@ -71,7 +68,7 @@ class SliderStyle {
 ///
 /// listeners : [onChanged], [onChangeStart], [onChangeEnd]
 ///
-/// ```
+/// ```dart
 ///  //in a statefull widget
 ///
 ///  double seekValue = 0;
@@ -114,8 +111,8 @@ class NeumorphicSlider extends StatefulWidget {
   final Widget? thumb;
   final double? sliderHeight;
 
-  NeumorphicSlider({
-    Key? key,
+  const NeumorphicSlider({
+    super.key,
     this.style = const SliderStyle(),
     this.min = 0,
     this.value = 0,
@@ -128,10 +125,10 @@ class NeumorphicSlider extends StatefulWidget {
     this.sliderHeight,
   });
 
-  double get percent => (((value.clamp(min, max)) - min) / ((max - min)));
+  double get percent => ((value.clamp(min, max)) - min) / (max - min);
 
   @override
-  createState() => _NeumorphicSliderState();
+  State<NeumorphicSlider> createState() => _NeumorphicSliderState();
 }
 
 class _NeumorphicSliderState extends State<NeumorphicSlider> {
@@ -143,22 +140,16 @@ class _NeumorphicSliderState extends State<NeumorphicSlider> {
           final tapPos = details.localPosition;
           final newPercent = tapPos.dx / constraints.maxWidth;
           final newValue =
-              ((widget.min + (widget.max - widget.min) * newPercent))
+              (widget.min + (widget.max - widget.min) * newPercent)
                   .clamp(widget.min, widget.max);
 
-          if (widget.onChanged != null) {
-            widget.onChanged!(newValue);
-          }
+          widget.onChanged?.call(newValue);
         },
         onPanStart: (DragStartDetails details) {
-          if (widget.onChangeStart != null) {
-            widget.onChangeStart!(widget.value);
-          }
+          widget.onChangeStart?.call(widget.value);
         },
         onPanEnd: (details) {
-          if (widget.onChangeEnd != null) {
-            widget.onChangeEnd!(widget.value);
-          }
+          widget.onChangeEnd?.call(widget.value);
         },
         child: _widget(context),
       );
@@ -166,7 +157,7 @@ class _NeumorphicSliderState extends State<NeumorphicSlider> {
   }
 
   Widget _widget(BuildContext context) {
-    double thumbSize = widget.height * 1.5;
+    final double thumbSize = widget.height * 1.5;
     return Stack(
       alignment: Alignment.center,
       children: <Widget>[
@@ -211,7 +202,7 @@ class _NeumorphicSliderState extends State<NeumorphicSlider> {
         border: widget.style.thumbBorder,
         lightSource: widget.style.lightSource ?? theme.lightSource,
         color: widget.style.accent ?? theme.accentColor,
-        boxShape: NeumorphicBoxShape.circle(),
+        boxShape: const NeumorphicBoxShape.circle(),
       ),
       child: SizedBox(
         height: size,

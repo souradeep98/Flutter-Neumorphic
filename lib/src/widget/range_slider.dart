@@ -1,12 +1,7 @@
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 
-import 'container.dart';
-import 'progress.dart';
-
-typedef void NeumorphicRangeSliderLowListener(double percent);
-typedef void NeumorphicRangeSliderHighListener(double percent);
+typedef NeumorphicRangeSliderLowListener = void Function(double percent);
+typedef NeumorphicRangeSliderHighListener = void Function(double percent);
 
 /// A style to customize the [NeumorphicSlider]
 ///
@@ -72,8 +67,8 @@ class RangeSliderStyle {
 ///
 /// listeners : [onChangedLow], [onChangeHigh]
 ///
-/// ```
-///  //in a statefull widget
+/// ```dart
+///  //in a stateful widget
 ///
 ///  double minPrice = 20;
 ///  double maxPrice = 90;
@@ -125,8 +120,8 @@ class NeumorphicRangeSlider extends StatefulWidget {
   final Function(ActiveThumb)? onPanEnded;
   final Widget? thumb;
 
-  NeumorphicRangeSlider({
-    Key? key,
+  const NeumorphicRangeSlider({
+    super.key,
     this.style = const RangeSliderStyle(),
     this.min = 0,
     this.max = 10,
@@ -141,13 +136,12 @@ class NeumorphicRangeSlider extends StatefulWidget {
     this.thumb,
   });
 
-  double get percentLow => (((valueLow.clamp(min, max)) - min) / ((max - min)));
+  double get percentLow => ((valueLow.clamp(min, max)) - min) / (max - min);
 
-  double get percentHigh =>
-      (((valueHigh.clamp(min, max)) - min) / ((max - min)));
+  double get percentHigh => ((valueHigh.clamp(min, max)) - min) / (max - min);
 
   @override
-  createState() => _NeumorphicRangeSliderState();
+  State<NeumorphicRangeSlider> createState() => _NeumorphicRangeSliderState();
 }
 
 class _NeumorphicRangeSliderState extends State<NeumorphicRangeSlider> {
@@ -156,45 +150,41 @@ class _NeumorphicRangeSliderState extends State<NeumorphicRangeSlider> {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(builder: (context, constraints) {
-      return _widget(context, constraints);
-    });
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return _widget(context, constraints);
+      },
+    );
   }
 
   Widget _widget(BuildContext context, BoxConstraints constraints) {
-    double thumbSize = widget.height * 1.5;
+    final double thumbSize = widget.height * 1.5;
 
-    Function panUpdate = (DragUpdateDetails details) {
+    void panUpdate(DragUpdateDetails details) {
       final tapPos = details.localPosition;
       final newPercent = tapPos.dx / constraints.maxWidth;
-      final newValue = ((widget.min + (widget.max - widget.min) * newPercent))
+      final newValue = (widget.min + (widget.max - widget.min) * newPercent)
           .clamp(widget.min, widget.max);
 
       switch (_activeThumb) {
         case ActiveThumb.low:
           if (newValue < widget.valueHigh) {
             _canChangeActiveThumb = false;
-            if (widget.onChangedLow != null) {
-              widget.onChangedLow!(newValue);
-            }
+            widget.onChangedLow?.call(newValue);
           } else if (_canChangeActiveThumb && details.delta.dx > 0) {
             _canChangeActiveThumb = false;
             _activeThumb = ActiveThumb.high;
           }
-          break;
         case ActiveThumb.high:
           if (newValue > widget.valueLow) {
             _canChangeActiveThumb = false;
-            if (widget.onChangeHigh != null) {
-              widget.onChangeHigh!(newValue);
-            }
+            widget.onChangeHigh?.call(newValue);
           } else if (_canChangeActiveThumb && details.delta.dx < 0) {
             _canChangeActiveThumb = false;
             _activeThumb = ActiveThumb.low;
           }
-          break;
       }
-    };
+    }
 
     return Stack(
       alignment: Alignment.center,
@@ -205,51 +195,49 @@ class _NeumorphicRangeSliderState extends State<NeumorphicRangeSlider> {
         ),
         Align(
           alignment: Alignment(
-              //because left = -1 & right = 1, so the "width" = 2, and minValue = 1
-              (widget.percentLow * 2) - 1,
-              0),
+            //because left = -1 & right = 1, so the "width" = 2, and minValue = 1
+            (widget.percentLow * 2) - 1,
+            0,
+          ),
           child: GestureDetector(
-              onHorizontalDragStart: (DragStartDetails details) {
-                _canChangeActiveThumb = true;
-                _activeThumb = ActiveThumb.low;
-                if (widget.onPanStarted != null) {
-                  widget.onPanStarted!(_activeThumb);
-                }
-              },
-              onHorizontalDragUpdate: (DragUpdateDetails details) {
-                panUpdate(details);
-              },
-              onHorizontalDragEnd: (details) {
-                if (widget.onPanEnded != null) {
-                  widget.onPanEnded!(_activeThumb);
-                }
-              },
-              child: widget.thumb ??
-                  _generateThumb(context, thumbSize, widget.style.variant)),
+            onHorizontalDragStart: (DragStartDetails details) {
+              _canChangeActiveThumb = true;
+              _activeThumb = ActiveThumb.low;
+              widget.onPanStarted?.call(_activeThumb);
+            },
+            onHorizontalDragUpdate: (DragUpdateDetails details) {
+              panUpdate(details);
+            },
+            onHorizontalDragEnd: (details) {
+              widget.onPanEnded?.call(_activeThumb);
+            },
+            child:
+                widget.thumb ??
+                _generateThumb(context, thumbSize, widget.style.variant),
+          ),
         ),
         Align(
           alignment: Alignment(
-              //because left = -1 & right = 1, so the "width" = 2, and minValue = 1
-              (widget.percentHigh * 2) - 1,
-              0),
+            //because left = -1 & right = 1, so the "width" = 2, and minValue = 1
+            (widget.percentHigh * 2) - 1,
+            0,
+          ),
           child: GestureDetector(
-              onHorizontalDragStart: (DragStartDetails details) {
-                _canChangeActiveThumb = true;
-                _activeThumb = ActiveThumb.high;
-                if (widget.onPanStarted != null) {
-                  widget.onPanStarted!(_activeThumb);
-                }
-              },
-              onHorizontalDragUpdate: (DragUpdateDetails details) {
-                panUpdate(details);
-              },
-              onHorizontalDragEnd: (details) {
-                if (widget.onPanEnded != null) {
-                  widget.onPanEnded!(_activeThumb);
-                }
-              },
-              child: widget.thumb ??
-                  _generateThumb(context, thumbSize, widget.style.accent)),
+            onHorizontalDragStart: (DragStartDetails details) {
+              _canChangeActiveThumb = true;
+              _activeThumb = ActiveThumb.high;
+              widget.onPanStarted?.call(_activeThumb);
+            },
+            onHorizontalDragUpdate: (DragUpdateDetails details) {
+              panUpdate(details);
+            },
+            onHorizontalDragEnd: (details) {
+              widget.onPanEnded?.call(_activeThumb);
+            },
+            child:
+                widget.thumb ??
+                _generateThumb(context, thumbSize, widget.style.accent),
+          ),
         ),
       ],
     );
@@ -257,8 +245,10 @@ class _NeumorphicRangeSliderState extends State<NeumorphicRangeSlider> {
 
   Widget _generateSlider(BuildContext context) {
     final theme = NeumorphicTheme.currentTheme(context);
-    return Stack(alignment: Alignment.center, children: <Widget>[
-      NeumorphicProgress(
+    return Stack(
+      alignment: Alignment.center,
+      children: <Widget>[
+        NeumorphicProgress(
           duration: Duration.zero,
           percent: 0,
           height: widget.sliderHeight ?? widget.height,
@@ -269,31 +259,35 @@ class _NeumorphicRangeSliderState extends State<NeumorphicRangeSlider> {
             borderRadius: widget.style.borderRadius,
             accent: widget.style.accent ?? theme.accentColor,
             variant: widget.style.variant ?? theme.variantColor,
-          )),
-      new Positioned.fill(
-        child: new LayoutBuilder(
-          builder: (context, constraints) {
-            return new Padding(
-              padding: new EdgeInsets.only(
+          ),
+        ),
+        Positioned.fill(
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              return Padding(
+                padding: EdgeInsets.only(
                   left: constraints.biggest.width * widget.percentLow,
-                  right: constraints.biggest.width * (1 - widget.percentHigh)),
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: widget.style.borderRadius,
-                  gradient: LinearGradient(
-                      begin: Alignment.centerLeft,
-                      end: Alignment.centerRight,
+                  right: constraints.biggest.width * (1 - widget.percentHigh),
+                ),
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: widget.style.borderRadius,
+                    gradient: LinearGradient(
+                      //begin: Alignment.centerLeft,
+                      //end: Alignment.centerRight,
                       colors: [
                         widget.style.variant ?? theme.variantColor,
                         widget.style.accent ?? theme.accentColor,
-                      ]),
+                      ],
+                    ),
+                  ),
                 ),
-              ),
-            );
-          },
+              );
+            },
+          ),
         ),
-      ),
-    ]);
+      ],
+    );
   }
 
   Widget _generateThumb(BuildContext context, double size, Color? color) {
@@ -304,13 +298,10 @@ class _NeumorphicRangeSliderState extends State<NeumorphicRangeSlider> {
         shape: NeumorphicShape.concave,
         color: color ?? theme.accentColor,
         border: widget.style.thumbBorder,
-        boxShape: NeumorphicBoxShape.circle(),
+        boxShape: const NeumorphicBoxShape.circle(),
         lightSource: widget.style.lightSource ?? theme.lightSource,
       ),
-      child: SizedBox(
-        height: size,
-        width: size,
-      ),
+      child: SizedBox(height: size, width: size),
     );
   }
 }

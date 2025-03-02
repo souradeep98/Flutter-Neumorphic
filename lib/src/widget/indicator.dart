@@ -1,8 +1,6 @@
-import 'dart:ui';
-
 import 'package:flutter/widgets.dart';
 
-import 'container.dart';
+import 'package:flutter_neumorphic/src/widget/container.dart';
 
 /// A Style to customize the [NeumorphicIndicator]
 ///
@@ -114,7 +112,7 @@ class NeumorphicIndicator extends StatefulWidget {
   final Curve curve;
 
   const NeumorphicIndicator({
-    Key? key,
+    super.key,
     this.percent = 0.5,
     this.orientation = NeumorphicIndicatorOrientation.vertical,
     this.height = double.maxFinite,
@@ -123,10 +121,10 @@ class NeumorphicIndicator extends StatefulWidget {
     this.style = const IndicatorStyle(),
     this.duration = const Duration(milliseconds: 300),
     this.curve = Curves.easeOutCubic,
-  }) : super(key: key);
+  });
 
   @override
-  createState() => _NeumorphicIndicatorState();
+  State<NeumorphicIndicator> createState() => _NeumorphicIndicatorState();
 
   @override
   // ignore: invalid_override_of_non_virtual_member
@@ -162,14 +160,16 @@ class _NeumorphicIndicatorState extends State<NeumorphicIndicator>
     with TickerProviderStateMixin {
   double oldPercent = 0;
   late AnimationController _controller;
-  late Animation _animation;
+  late Animation<double> _animation;
 
   @override
   void initState() {
     super.initState();
     _controller = AnimationController(vsync: this, duration: widget.duration);
-    _animation = Tween<double>(begin: widget.percent, end: oldPercent)
-        .animate(_controller);
+    _animation = Tween<double>(
+      begin: widget.percent,
+      end: oldPercent,
+    ).animate(_controller);
   }
 
   @override
@@ -177,8 +177,10 @@ class _NeumorphicIndicatorState extends State<NeumorphicIndicator>
     if (oldWidget.percent != widget.percent) {
       _controller.reset();
       oldPercent = oldWidget.percent;
-      _animation = Tween<double>(begin: oldPercent, end: widget.percent)
-          .animate(CurvedAnimation(parent: _controller, curve: widget.curve));
+      _animation = Tween<double>(
+        begin: oldPercent,
+        end: widget.percent,
+      ).animate(CurvedAnimation(parent: _controller, curve: widget.curve));
       _controller.forward();
     }
     super.didUpdateWidget(oldWidget);
@@ -197,54 +199,58 @@ class _NeumorphicIndicatorState extends State<NeumorphicIndicator>
       height: widget.height,
       width: widget.width,
       child: Neumorphic(
-        padding: EdgeInsets.zero,
+        //padding: EdgeInsets.zero,
         style: NeumorphicStyle(
-          boxShape: NeumorphicBoxShape.stadium(),
+          boxShape: const NeumorphicBoxShape.stadium(),
           lightSource: widget.style.lightSource ?? theme.lightSource,
           disableDepth: widget.style.disableDepth,
           depth: widget.style.depth,
-          shape: NeumorphicShape.flat,
+          //shape: NeumorphicShape.flat,
         ),
         child: AnimatedBuilder(
-            animation: _animation,
-            builder: (_, __) {
-              return FractionallySizedBox(
-                heightFactor: widget.orientation ==
-                        NeumorphicIndicatorOrientation.vertical
-                    ? _animation.value
-                    : 1,
-                widthFactor: widget.orientation ==
-                        NeumorphicIndicatorOrientation.horizontal
-                    ? _animation.value
-                    : 1,
-                alignment: widget.orientation ==
-                        NeumorphicIndicatorOrientation.horizontal
-                    ? Alignment.centerLeft
-                    : Alignment.bottomCenter,
-                child: Padding(
-                  padding: widget.padding,
-                  child: Neumorphic(
-                    style: NeumorphicStyle(
-                      boxShape: NeumorphicBoxShape.stadium(),
-                      lightSource:
-                          widget.style.lightSource ?? theme.lightSource,
-                    ),
-                    child: Container(
-                        decoration: BoxDecoration(
+          animation: _animation,
+          builder: (_, _) {
+            return FractionallySizedBox(
+              heightFactor:
+                  (widget.orientation ==
+                          NeumorphicIndicatorOrientation.vertical)
+                      ? _animation.value
+                      : 1,
+              widthFactor:
+                  widget.orientation ==
+                          NeumorphicIndicatorOrientation.horizontal
+                      ? _animation.value
+                      : 1,
+              alignment:
+                  widget.orientation ==
+                          NeumorphicIndicatorOrientation.horizontal
+                      ? Alignment.centerLeft
+                      : Alignment.bottomCenter,
+              child: Padding(
+                padding: widget.padding,
+                child: Neumorphic(
+                  style: NeumorphicStyle(
+                    boxShape: const NeumorphicBoxShape.stadium(),
+                    lightSource: widget.style.lightSource ?? theme.lightSource,
+                  ),
+                  child: Container(
+                    decoration: BoxDecoration(
                       gradient: LinearGradient(
                         begin:
                             widget.style.gradientStart ?? Alignment.topCenter,
                         end: widget.style.gradientEnd ?? Alignment.bottomCenter,
                         colors: [
                           widget.style.accent ?? theme.accentColor,
-                          widget.style.variant ?? theme.variantColor
+                          widget.style.variant ?? theme.variantColor,
                         ],
                       ),
-                    )),
+                    ),
                   ),
                 ),
-              );
-            }),
+              ),
+            );
+          },
+        ),
       ),
     );
   }

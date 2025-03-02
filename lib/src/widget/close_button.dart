@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 
 class NeumorphicCloseButton extends StatelessWidget {
@@ -8,11 +6,11 @@ class NeumorphicCloseButton extends StatelessWidget {
   final EdgeInsets? padding;
 
   const NeumorphicCloseButton({
-    Key? key,
+    super.key,
     this.onPressed,
     this.style,
     this.padding,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

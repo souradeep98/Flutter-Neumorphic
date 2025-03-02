@@ -1,8 +1,5 @@
 import 'dart:io';
 
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 
 @immutable
@@ -21,7 +18,7 @@ class NeumorphicAppBarThemeData {
     this.textStyle,
     this.buttonStyle = const NeumorphicStyle(),
     this.centerTitle,
-    this.buttonPadding = const EdgeInsets.all(0),
+    this.buttonPadding = EdgeInsets.zero,
     this.icons = const NeumorphicAppBarIcons(),
   });
 }
