@@ -113,7 +113,7 @@ class NeumorphicSwitchStyle {
 ///
 @immutable
 class NeumorphicSwitch extends StatelessWidget {
-  static const MIN_EMBOSS_DEPTH = -1.0;
+  static const double MIN_EMBOSS_DEPTH = -1.0;
 
   final bool value;
   final ValueChanged<bool>? onChanged;

@@ -127,7 +127,7 @@ class ToggleElement {
 ///),
 @immutable
 class NeumorphicToggle extends StatelessWidget {
-  static const MIN_EMBOSS_DEPTH = -1.0;
+  static const double MIN_EMBOSS_DEPTH = -1.0;
 
   final EdgeInsets padding;
 
