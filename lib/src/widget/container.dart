@@ -13,7 +13,7 @@ export '../theme/neumorphic_theme.dart';
 /// The main container of the Neumorphic UI KIT
 /// it takes a Neumorphic style @see [NeumorphicStyle]
 ///
-/// it's clipped using a [NeumorphicBoxShape] (circle, roundrect, stadium)
+/// it's clipped using a [NeumorphicBoxShape] (circle, roundRect, stadium)
 ///
 /// It can be, depending on its [NeumorphicStyle.shape] : [NeumorphicShape.concave],  [NeumorphicShape.convex],  [NeumorphicShape.flat]
 ///
@@ -32,7 +32,7 @@ export '../theme/neumorphic_theme.dart';
 /// drawSurfaceAboveChild - UseCase 2 :
 ///   put an image inside a neumorphic(emboss) :
 ///   drawSurfaceAboveChild=false -> the emboss effect is below the image -> not visible
-///   drawSurfaceAboveChild=true -> the emboss effeect effect is above the image -> visible
+///   drawSurfaceAboveChild=true -> the emboss effect effect is above the image -> visible
 ///
 @immutable
 class Neumorphic extends StatelessWidget {

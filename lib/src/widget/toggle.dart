@@ -93,8 +93,7 @@ class ToggleElement {
 ///
 /// does not save the state
 ///   - notifies a `ValueChanged<int>` : onChanged
-///   - need a `selectedIndex` parameter
-///oggle
+///   - need a `selectedIndex` parameter toggle
 /// Expanded(
 ///  child: NeumorphicToggle(
 ///    height: 50,

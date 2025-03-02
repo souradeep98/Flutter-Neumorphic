@@ -7,9 +7,9 @@ import 'package:flutter_neumorphic/src/widget/container.dart';
 ///
 /// the gradient will use [accent] and [variant]
 ///
-/// the gradient shape will be a roundrect, using [borderRadius]
+/// the gradient shape will be a roundRect, using [borderRadius]
 ///
-/// you can define a custom [depth] for the roundrect
+/// you can define a custom [depth] for the roundRect
 ///
 /// you can update the gradient orientation using [progressGradientStart] & [progressGradientEnd]
 ///

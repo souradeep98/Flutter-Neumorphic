@@ -19,7 +19,7 @@ typedef NeumorphicButtonClickListener = void Function();
 ///
 /// It takes a [padding], default EdgeInsets.symmetric(horizontal: 8, vertical: 4)`
 ///
-/// It takes a [NeumorphicStyle] @see [Neumorphi]
+/// It takes a [NeumorphicStyle] @see [Neumorphic]
 ///
 /// ```dart
 ///  NeumorphicButton(

@@ -7,9 +7,9 @@ typedef NeumorphicRangeSliderHighListener = void Function(double percent);
 ///
 /// the gradient will use [accent] and [variant]
 ///
-/// the gradient shape will be a roundrect, using [borderRadius]
+/// the gradient shape will be a roundRect, using [borderRadius]
 ///
-/// you can define a custom [depth] for the roundrect
+/// you can define a custom [depth] for the roundRect
 ///
 @immutable
 class RangeSliderStyle {

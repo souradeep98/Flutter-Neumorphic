@@ -48,3 +48,4 @@ linter:
     avoid_setters_without_getters: false
     unreachable_from_main: false
     combinators_ordering: false
+    constant_identifier_names: false

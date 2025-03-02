@@ -31,7 +31,7 @@ const double _defaultBorderSize = 0.3;
 /// Contains all default values used in child Neumorphic Elements as
 /// default colors : baseColor, accentColor, variantColor
 /// default depth & intensities, used to generate white / dark shadows
-/// default lightsource, used to calculate the angle of the shadow
+/// default lightSource, used to calculate the angle of the shadow
 /// @see [LightSource]
 ///
 @immutable

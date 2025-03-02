@@ -80,8 +80,8 @@ abstract class AbstractNeumorphicEmbossPainterCache {
   }
 
   bool?
-      _cacheOppositeShadowLightSource; //store the old style lightsource property
-  LightSource? _cacheLightSource; //store the old style lightsource
+      _cacheOppositeShadowLightSource; //store the old style lightSource property
+  LightSource? _cacheLightSource; //store the old style lightSource
 
   LightSource? _lightSource; //used to draw
   LightSource get lightSource =>
