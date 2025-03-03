@@ -83,11 +83,13 @@ class NeumorphicApp extends StatelessWidget {
       );
     }
 
+    final Brightness brightness = ThemeData.estimateBrightnessForColor(theme.baseColor);
+
     return ThemeData(
       primaryColor: theme.accentColor,
       //accentColor: theme.variantColor,
       colorScheme: ColorScheme(
-        brightness: Brightness.light,
+        brightness: brightness,
         primary: theme.accentColor,
         onPrimary: theme.appBarTheme.textStyle?.color ?? Colors.white,
         secondary: theme.variantColor,
@@ -98,7 +100,7 @@ class NeumorphicApp extends StatelessWidget {
         onSurface: theme.defaultTextColor,
       ),
       iconTheme: theme.iconTheme,
-      brightness: ThemeData.estimateBrightnessForColor(theme.baseColor),
+      brightness: brightness,
       /*primaryColorBrightness:
           ThemeData.estimateBrightnessForColor(theme.accentColor),
       accentColorBrightness:
