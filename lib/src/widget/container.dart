@@ -79,45 +79,8 @@ class Neumorphic extends StatelessWidget {
             .copyWithThemeIfNull(theme)
             .applyDisableDepth();
 
-    return _NeumorphicContainer(
-      padding: padding,
-      textStyle: textStyle,
-      drawSurfaceAboveChild: drawSurfaceAboveChild,
-      duration: duration,
-      style: style,
-      curve: curve,
-      margin: margin,
-      child: child,
-    );
-  }
-}
-
-class _NeumorphicContainer extends StatelessWidget {
-  final NeumorphicStyle style;
-  final TextStyle? textStyle;
-  final Widget? child;
-  final EdgeInsets margin;
-  final Duration duration;
-  final Curve curve;
-  final bool drawSurfaceAboveChild;
-  final EdgeInsets padding;
-
-  const _NeumorphicContainer({
-    // ignore: unused_element_parameter
-    super.key,
-    this.child,
-    this.textStyle,
-    required this.padding,
-    required this.margin,
-    required this.duration,
-    required this.curve,
-    required this.style,
-    required this.drawSurfaceAboveChild,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final shape = style.boxShape ?? const NeumorphicBoxShape.rect();
+    final NeumorphicBoxShape shape =
+        style.boxShape ?? const NeumorphicBoxShape.rect();
 
     return DefaultTextStyle(
       style: textStyle ?? material.Theme.of(context).textTheme.bodyMedium!,
@@ -125,6 +88,65 @@ class _NeumorphicContainer extends StatelessWidget {
         margin: margin,
         duration: duration,
         curve: curve,
+        child: NeumorphicBoxShapeClipper(
+          shape: shape,
+          child: Padding(padding: padding, child: child),
+        ),
+        foregroundDecoration: NeumorphicDecoration(
+          isForeground: true,
+          renderingByPath: shape.customShapePathProvider.oneGradientPerPath,
+          splitBackgroundForeground: drawSurfaceAboveChild,
+          style: style,
+          shape: shape,
+        ),
+        decoration: NeumorphicDecoration(
+          isForeground: false,
+          renderingByPath: shape.customShapePathProvider.oneGradientPerPath,
+          splitBackgroundForeground: drawSurfaceAboveChild,
+          style: style,
+          shape: shape,
+        ),
+      ),
+    );
+  }
+}
+
+@immutable
+class NeumorphicNA extends StatelessWidget {
+  final Widget? child;
+
+  final NeumorphicStyle? style;
+  final TextStyle? textStyle;
+  final EdgeInsets padding;
+  final EdgeInsets margin;
+  final bool
+  drawSurfaceAboveChild; //if true => boxDecoration & foreground decoration, else => boxDecoration does all the work
+
+  const NeumorphicNA({
+    super.key,
+    this.child,
+    this.style,
+    this.textStyle,
+    this.margin = EdgeInsets.zero,
+    this.padding = EdgeInsets.zero,
+    this.drawSurfaceAboveChild = true,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = NeumorphicTheme.currentTheme(context);
+    final NeumorphicStyle style =
+        (this.style ?? const NeumorphicStyle())
+            .copyWithThemeIfNull(theme)
+            .applyDisableDepth();
+
+    final NeumorphicBoxShape shape =
+        style.boxShape ?? const NeumorphicBoxShape.rect();
+
+    return DefaultTextStyle(
+      style: textStyle ?? material.Theme.of(context).textTheme.bodyMedium!,
+      child: Container(
+        margin: margin,
         child: NeumorphicBoxShapeClipper(
           shape: shape,
           child: Padding(padding: padding, child: child),
