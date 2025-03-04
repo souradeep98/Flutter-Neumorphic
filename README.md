@@ -43,22 +43,22 @@ import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 <tr>
   <td><img width="300px" src="https://github.com/Idean/Flutter-Neumorphic/raw/master/medias/widgets/container.gif"/></td>
   <td>Neumorphic</td>
-  <td>The main Neumorphic Widget, a container which adds white/dark gradient depending on a lightsource and a depth </td>
+  <td>The main Neumorphic Widget, a container which adds white/dark gradient depending on a light-source and a depth </td>
 </tr>
 <tr>
   <td><img width="300px" src="https://github.com/Idean/Flutter-Neumorphic/raw/master/medias/widgets/button.gif"/></td>
   <td>NeumorphicButton</td>
-  <td>A neumorphic button that plays with the depth to respond to user interraction</td>
+  <td>A neumorphic button that plays with the depth to respond to user interaction</td>
 </tr>
 <tr>
   <td><img width="300px" src="https://github.com/Idean/Flutter-Neumorphic/raw/master/medias/widgets/radio.gif"/></td>
   <td>NeumorphicRadio</td>
-  <td>A set of neumorphic button whith only one selected at time, depending on a value and groupValue</td>
+  <td>A set of neumorphic button, only one selected at time, depending on a value and groupValue</td>
 </tr>
 <tr>
   <td><img width="300px" src="https://github.com/Idean/Flutter-Neumorphic/raw/master/medias/widgets/checkbox.gif"/></td>
   <td>NeumorphicCheckbox</td>
-  <td> A button associated with a value, can be checked/unckecked, if checked, takes the accent color</td>
+  <td> A button associated with a value, can be checked/unchecked, if checked, takes the accent color</td>
 </tr>
 
 <tr>
@@ -85,12 +85,12 @@ import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 <tr>
   <td><img width="300px" src="https://github.com/Idean/Flutter-Neumorphic/raw/master/medias/widgets/toggle.gif"/> </td>
   <td>NeumorphicToggle</td>
-  <td>An mutiple value toggle, associated with a selecteedIndex</td>
+  <td>An multiple value toggle, associated with a selectedIndex</td>
 </tr>
 <tr>
   <td><img width="300px" src="https://github.com/Idean/Flutter-Neumorphic/raw/master/medias/widgets/slider.gif"/></td>
   <td>NeumorphicSlider</td>
-  <td>A Neumorphic seekbar (range slider), the user can select a value in a range</td>
+  <td>A Neumorphic seek-bar (range slider), the user can select a value in a range</td>
 </tr>
 <tr>
   <td><img width="300px" src="https://github.com/Idean/Flutter-Neumorphic/raw/master/medias/widgets/progress.gif"/></td>
@@ -100,7 +100,7 @@ import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 <tr>
   <td><img width="300px"src="https://github.com/Idean/Flutter-Neumorphic/raw/master/medias/widgets/indeterminate.gif"/> </td>
   <td>NeumorphicProgressIndeterminate</td>
-  <td>An inderminate progress-bar</td>
+  <td>An indeterminate progress-bar</td>
 </tr>
 <tr>
   <td><img src="https://github.com/Idean/Flutter-Neumorphic/raw/master/medias/widgets/background.png"/> </td>
@@ -110,12 +110,12 @@ import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 <tr>
   <td><img width="300px" src="https://github.com/Idean/Flutter-Neumorphic/raw/master/medias/widgets/background.png"/> </td>
   <td>NeumorphicApp</td>
-  <td>An application that uses Neumorphic design. Handle theme, navigation, localisation, and much more</td>
+  <td>An application that uses Neumorphic design. Handle theme, navigation, localization, and much more</td>
 </tr>
 <tr>
   <td><img src="https://github.com/Idean/Flutter-Neumorphic/raw/master/medias/widgets/app_bar.png"/> </td>
   <td>NeumorphicAppBar</td>
-  <td>A Neumorphhic design app bar. Can be used inside Scaffold</td>
+  <td>A Neumorphic design app bar. Can be used inside Scaffold</td>
 </tr>
 
 </tbody>
@@ -155,7 +155,7 @@ Neumorphic(
 
 | Attributes | Values | Description |
 |------------|--------|-------------|
-| LightSource | TopLeft, BottomRight, etc. / (dx, dy) | The source of light specifit to the theme or the widget, used to project white/dark shadows on neumorphic elements |
+| LightSource | TopLeft, BottomRight, etc. / (dx, dy) | The source of light specific to the theme or the widget, used to project white/dark shadows on neumorphic elements |
 | [Shape](#-shapes) | Concave / Convex / Flat | The shape of the curve used in the neumorphic container |
 | [Depth](#depth) | -20 <= double <= 20 | The distance of the widget to his parent. Can be negative => emboss. It influences on the shadow's color and its size/blur |
 | [Intensity](#intensity) | 0 <= double <= 1 | The intensity of the Light, it influences on the shadow's color |
@@ -163,7 +163,7 @@ Neumorphic(
 | Color | any Color | The default color of  Neumorphic elements | 
 | Accent | any Color | The default accent color of the Neumorphic element when activated (eg: checkbox) | 
 | Variant | any Color | The default secondary color of the Neumorphic element (eg: used as second color on the progress gradient) | 
-| [BoxShape](#-custom-shape) | Circle, RoundRect(radius), Stadium, Path | The box shape of a Neumorphic element. Stadium : roundrect with cirlces on each side | 
+| [BoxShape](#-custom-shape) | Circle, RoundRect(radius), Stadium, Path | The box shape of a Neumorphic element. Stadium : roundRect with circles on each side | 
 | [Border](#-accessibility--border) | NeumorphicBorder | A border (color/width) to enhance contrast with background and others elements | 
 
 [![Neumorphic](https://github.com/Idean/Flutter-Neumorphic/blob/master/medias/doc/depth.gif)](https://github.com/Idean/Flutter-Neumorphic)
@@ -388,7 +388,7 @@ if(NeumorphicTheme.of(context).isUsingDark){
 
 # NeumorphicApp
 
-You can use direcly in your project a `NeumorphicApp`, surrounding your code
+You can use directly in your project a `NeumorphicApp`, surrounding your code
 
 It handle directly NeumorphicTheme & Navigation (and all possibilities of MaterialApp )
 
@@ -433,7 +433,7 @@ Neumorphic card however pretends to extrude from the background. It’s a raised
 
 [![neumorphic_button](https://github.com/Idean/Flutter-Neumorphic/blob/master/medias/button_press.gif)](https://github.com/Idean/Flutter-Neumorphic)
 
-Here's a Nereumorphic Button tap (slowed x2) from the sample app, you can see how the element seems to change its depth to its surface.
+Here's a Neumorphic Button tap (slowed x2) from the sample app, you can see how the element seems to change its depth to its surface.
 
 
 # 👥 Contributors
@@ -455,6 +455,6 @@ Here's a Nereumorphic Button tap (slowed x2) from the sample app, you can see ho
 Flutter-Neumorphic is released under the Apache2 license.
 See [LICENSE](./LICENSE) for details.
 
-If you use the open-source library in your project, please make sure to credit and backlink to www.idean.com
+If you use the open-source library in your project, please make sure to credit and back-link to www.idean.com
 
 [![bottom_banner](https://github.com/Idean/Flutter-Neumorphic/blob/master/medias/bottom_banner.png)](https://www.idean.com)

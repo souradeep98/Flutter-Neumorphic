@@ -90,7 +90,6 @@ class NeumorphicProgress extends StatefulWidget {
   final Duration duration;
   final ProgressStyle style;
   final Curve curve;
-  final Clip clipBehavior;
 
   const NeumorphicProgress({
     super.key,
@@ -99,7 +98,6 @@ class NeumorphicProgress extends StatefulWidget {
     this.duration = const Duration(milliseconds: 300),
     this.style = const ProgressStyle(),
     this.curve = Curves.easeOutCubic,
-    this.clipBehavior = Clip.antiAlias,
   }) : _percent = percent;
 
   @override
@@ -172,7 +170,6 @@ class _NeumorphicProgressState extends State<NeumorphicProgress>
         widthFactor: 1,
         //width: constraints.maxWidth,
         child: Neumorphic(
-          clipBehavior: widget.clipBehavior,
           //padding: EdgeInsets.zero,
           style: NeumorphicStyle(
             boxShape: NeumorphicBoxShape.roundRect(widget.style.borderRadius),
@@ -232,7 +229,6 @@ class NeumorphicProgressIndeterminate extends StatefulWidget {
   final Duration duration;
   final bool reverse;
   final Curve curve;
-  final Clip clipBehavior;
 
   const NeumorphicProgressIndeterminate({
     super.key,
@@ -241,7 +237,6 @@ class NeumorphicProgressIndeterminate extends StatefulWidget {
     this.duration = const Duration(seconds: 3),
     this.reverse = false,
     this.curve = Curves.easeInOut,
-    this.clipBehavior = Clip.antiAlias,
   });
 
   @override
@@ -310,7 +305,6 @@ class _NeumorphicProgressIndeterminateState
       child: SizedBox(
         height: widget.height,
         child: Neumorphic(
-          clipBehavior: widget.clipBehavior,
           //padding: EdgeInsets.zero,
           style: NeumorphicStyle(
             boxShape: NeumorphicBoxShape.roundRect(widget.style.borderRadius),

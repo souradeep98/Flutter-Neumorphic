@@ -110,7 +110,6 @@ class NeumorphicSlider extends StatefulWidget {
 
   final Widget? thumb;
   final double? sliderHeight;
-  final Clip clipBehavior;
 
   const NeumorphicSlider({
     super.key,
@@ -124,7 +123,6 @@ class NeumorphicSlider extends StatefulWidget {
     this.onChangeEnd,
     this.thumb,
     this.sliderHeight,
-    this.clipBehavior = Clip.antiAlias,
   });
 
   double get percent => ((value.clamp(min, max)) - min) / (max - min);
@@ -198,7 +196,6 @@ class _NeumorphicSliderState extends State<NeumorphicSlider> {
   Widget _generateThumb(BuildContext context, double size) {
     final theme = NeumorphicTheme.currentTheme(context);
     return Neumorphic(
-      clipBehavior: widget.clipBehavior,
       style: NeumorphicStyle(
         disableDepth: widget.style.disableDepth,
         shape: NeumorphicShape.concave,

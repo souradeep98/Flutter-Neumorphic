@@ -122,7 +122,6 @@ class NeumorphicSwitch extends StatelessWidget {
   final Duration duration;
   final Curve curve;
   final bool isEnabled;
-  final Clip clipBehavior;
 
   const NeumorphicSwitch({
     this.style = const NeumorphicSwitchStyle(),
@@ -133,7 +132,6 @@ class NeumorphicSwitch extends StatelessWidget {
     this.onChanged,
     this.height = 40,
     this.isEnabled = true,
-    this.clipBehavior = Clip.antiAlias,
   });
 
   @override
@@ -152,7 +150,6 @@ class NeumorphicSwitch extends StatelessWidget {
             onChanged?.call(!value);
           },
           child: Neumorphic(
-            clipBehavior: clipBehavior,
             drawSurfaceAboveChild: false,
             style: NeumorphicStyle(
               boxShape: const NeumorphicBoxShape.stadium(),
@@ -167,7 +164,6 @@ class NeumorphicSwitch extends StatelessWidget {
               scale: isEnabled ? 1 : 0,
               alignment: value ? const Alignment(0.5, 0) : const Alignment(-0.5, 0),
               child: AnimatedThumb(
-                clipBehavior: clipBehavior,
                 curve: curve,
                 disableDepth: style.disableDepth,
                 depth: _thumbDepth,
@@ -240,7 +236,6 @@ class AnimatedThumb extends StatelessWidget {
   final bool disableDepth;
   final NeumorphicBorder border;
   final LightSource lightSource;
-  final Clip clipBehavior;
 
   const AnimatedThumb({
     super.key,
@@ -253,7 +248,6 @@ class AnimatedThumb extends StatelessWidget {
     this.border = const NeumorphicBorder.none(),
     this.lightSource = LightSource.topLeft,
     this.disableDepth = false,
-    this.clipBehavior = Clip.antiAlias,
   });
 
   @override
@@ -266,7 +260,6 @@ class AnimatedThumb extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(4.0),
         child: Neumorphic(
-          clipBehavior: clipBehavior,
           style: NeumorphicStyle(
             boxShape: const NeumorphicBoxShape.circle(),
             disableDepth: disableDepth,
