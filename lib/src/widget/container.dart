@@ -52,12 +52,17 @@ class Neumorphic extends StatelessWidget {
 
   final NeumorphicStyle? style;
   final TextStyle? textStyle;
-  final EdgeInsets padding;
-  final EdgeInsets margin;
+  final EdgeInsetsGeometry? padding;
+  final EdgeInsetsGeometry? margin;
   final Curve curve;
   final Duration duration;
-  final bool
-  drawSurfaceAboveChild; //if true => boxDecoration & foreground decoration, else => boxDecoration does all the work
+  // if true => boxDecoration & foreground decoration, else => boxDecoration does all the work
+  final bool drawSurfaceAboveChild;
+  final double? width;
+  final double? height;
+  final BoxConstraints? constraints;
+  final Matrix4? transform;
+  final AlignmentGeometry? alignment;
 
   const Neumorphic({
     super.key,
@@ -66,14 +71,19 @@ class Neumorphic extends StatelessWidget {
     this.curve = Neumorphic.DEFAULT_CURVE,
     this.style,
     this.textStyle,
-    this.margin = EdgeInsets.zero,
-    this.padding = EdgeInsets.zero,
+    this.margin,
+    this.padding,
     this.drawSurfaceAboveChild = true,
+    this.height,
+    this.width,
+    this.constraints,
+    this.transform,
+    this.alignment,
   });
 
   @override
   Widget build(BuildContext context) {
-    final theme = NeumorphicTheme.currentTheme(context);
+    final NeumorphicThemeData theme = NeumorphicTheme.currentTheme(context);
     final NeumorphicStyle style =
         (this.style ?? const NeumorphicStyle())
             .copyWithThemeIfNull(theme)
@@ -85,13 +95,16 @@ class Neumorphic extends StatelessWidget {
     return DefaultTextStyle(
       style: textStyle ?? material.Theme.of(context).textTheme.bodyMedium!,
       child: AnimatedContainer(
+        constraints: constraints,
+        width: width,
+        height: height,
         margin: margin,
         duration: duration,
         curve: curve,
-        child: NeumorphicBoxShapeClipper(
-          shape: shape,
-          child: Padding(padding: padding, child: child),
-        ),
+        padding: padding,
+        transform: transform,
+        alignment: alignment,
+        child: NeumorphicBoxShapeClipper(shape: shape, child: child),
         foregroundDecoration: NeumorphicDecoration(
           isForeground: true,
           renderingByPath: shape.customShapePathProvider.oneGradientPerPath,
@@ -111,30 +124,40 @@ class Neumorphic extends StatelessWidget {
   }
 }
 
+/// Not Animated version of Neumorphic Container
 @immutable
 class NeumorphicNA extends StatelessWidget {
   final Widget? child;
-
   final NeumorphicStyle? style;
   final TextStyle? textStyle;
-  final EdgeInsets padding;
-  final EdgeInsets margin;
-  final bool
-  drawSurfaceAboveChild; //if true => boxDecoration & foreground decoration, else => boxDecoration does all the work
+  final EdgeInsetsGeometry? padding;
+  final EdgeInsetsGeometry? margin;
+  // if true => boxDecoration & foreground decoration, else => boxDecoration does all the work
+  final bool drawSurfaceAboveChild;
+  final double? width;
+  final double? height;
+  final BoxConstraints? constraints;
+  final Matrix4? transform;
+  final AlignmentGeometry? alignment;
 
   const NeumorphicNA({
     super.key,
     this.child,
     this.style,
     this.textStyle,
-    this.margin = EdgeInsets.zero,
-    this.padding = EdgeInsets.zero,
+    this.margin,
+    this.padding,
     this.drawSurfaceAboveChild = true,
+    this.height,
+    this.width,
+    this.constraints,
+    this.transform,
+    this.alignment,
   });
 
   @override
   Widget build(BuildContext context) {
-    final theme = NeumorphicTheme.currentTheme(context);
+    final NeumorphicThemeData theme = NeumorphicTheme.currentTheme(context);
     final NeumorphicStyle style =
         (this.style ?? const NeumorphicStyle())
             .copyWithThemeIfNull(theme)
@@ -146,11 +169,14 @@ class NeumorphicNA extends StatelessWidget {
     return DefaultTextStyle(
       style: textStyle ?? material.Theme.of(context).textTheme.bodyMedium!,
       child: Container(
+        alignment: alignment,
+        transform: transform,
+        constraints: constraints,
+        width: width,
+        height: height,
         margin: margin,
-        child: NeumorphicBoxShapeClipper(
-          shape: shape,
-          child: Padding(padding: padding, child: child),
-        ),
+        padding: padding,
+        child: NeumorphicBoxShapeClipper(shape: shape, child: child),
         foregroundDecoration: NeumorphicDecoration(
           isForeground: true,
           renderingByPath: shape.customShapePathProvider.oneGradientPerPath,
